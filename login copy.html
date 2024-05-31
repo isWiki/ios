@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        html{
+            height:100%;
+        }
+        body {
+            height:100%;
+        }
+        .container{
+            height:100%;
+            background-image:linear-gradient(to right,#fbc2eb,#a6c1ee);
+        }
+        .login-wrapper{
+            background-color: #fff;
+            width: 358px;
+            height: 588px;
+            border-radius: 15px;
+            padding: 0 50px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        header{
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 200px;
+        }
+        .btn{
+            text-align:center;
+            padding: 10px;
+            width:100%;
+            margin-top:40px;
+            background-image: linear-gradient(to right,#a6c1ee, #fbc2eb);
+            color: #fff;
+        }
+        .msg {
+            text-align:center;
+            line-height:88px;
+        }
+        a{
+            text-decoration-line:none;
+            color: #a1ee;
+        }
+    </style>
+    <script>
+
+        function isNumeric(valueData) {
+            return /^\d+$/.test(valueData);
+        }
+
+        window.onload = function(){
+            var btn = document.getElementsByClassName("btn")[0];
+            btn.onclick = function(){
+                console.log("绑定登录按钮成功！");
+
+                const username = document.querySelector(".username").value;
+                const password = document.querySelector(".password").value;
+                var validUsername = isNumeric(username);
+                var validPassword = isNumeric(password);
+                console.log(validPassword);
+
+                if(!validUsername || username.length < 6 || username.length > 10){
+                    alert("用户名错误");
+                    return
+                }
+                if(!validPassword || password.length < 6 || password.length > 10){
+                    alert("密码错误");
+                    return
+                }
+
+                axios({
+                    url:"http://127.0.0.1:8002/login",
+                    method:"POST",
+                    data:{
+                        username:username,
+                        password:password
+                    }
+                }).then(result => {
+                    console.log(result);
+                    if(result.status == 200){
+                        window.location.href = "http://www.baidu.com";
+                    }
+                })    
+            }
+            
+               
+        }
+        
+
+    </script>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <div class="container">
+        <div class="login-wrapper">
+            <div class="header">Login</div>
+            <div class="form-wrapper">
+                <input type="text" name="username" placeholder="username" class="username">
+                <br>
+                <input type="password" name="password" placeholder="password" class="password">
+                <button class="btn">
+                    Login
+                </button>
+        </div>
+    </div>
+</body>
+</html>
